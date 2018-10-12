@@ -1,2 +1,1 @@
-# ABAP
-The ABAP TEC summary
+## The ABAP TEC summary
