@@ -64,6 +64,7 @@
 		    ENDIF.
 	endform.   
 ## 4.Tcode
-
-	
+	SE19 : BADI修改和创建
+	ST22 : 查看日志信息
+	SE91 : 消息管理
 	
