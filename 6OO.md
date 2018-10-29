@@ -2,7 +2,7 @@
 	1. 可以使用的OO技术来减少错误的隐患以及增强代码的可维护性。
 	ABAP OO的年代史。
 	  <1> SAP Basis Release 4.5发布了ABAP OO的一个版本，引入了类接口的概念，并可以通过类来创建对象（实例化类）。
-	  <2> SAP Basis Release 4.6发布了ABAP OO的完全版本，引入了OO方式的重要概念继承（inheritance）,可以通过多个接口来建立一个复合的接口。
+	  <2> SAP Basis Release 4.6发布了ABAP OO的完全版本，引入了OO方式的重要概念继承,可以通过多个接口来建立一个复合的接口。
 	  <3> SAP WEB APPLICATION SERVER 6.10/6.20 SAP basis的下一代版本，在类之间引入了friendship的概念。
 		并引入了对象服务（object service）可以把对象存储在数据库中。
 	  <4> SAP WEB APPLICATION SERVER 6.40引入了共享对象（Shared Objects）的概念,即允许在应用服务器的共享内存中存储对象。
@@ -38,7 +38,7 @@
 		DATA: A1…(动态属性)      obj_name->xyz
 		METHODS: M1….(动态方法)
 		EVENTS: E1….(动态事件)
-								class_name=>xyz/obj_name=>xyz
+								class_name=>xyz
 		CLASS-DATA:CA1….(静态属性)
 		ClASS-METHODS:CM1….(静态方法)
 		CLASS-EVENTS:CE1….(静态事件)
@@ -101,4 +101,68 @@
 	    PUBLIC SECTION.
 	      METHODS demo1 REDEFINITION.
 	  ENDCLASS.
+	8. Final 类
+	  CLASS final_class DEFINITION FINAL.
+	    .....
+	  ENDCLASS.
+	  A.最终类不能再被继承
+	  B.一个最终类的所有方法也都被视为最终的,不需要在方法中再声明FINAL.
+	  C.最终方法不会被重定义(非最终类的情况下,可以在继承类出现).
+	  D.在保护一个类或者避免方法被重新设定的时候可以才用FINAL关键字.
+	  E.一个最终方法不能是抽象方法.
+	  F.一个最终类可以是抽象类,但这种情况下只能使用它的静态组件,不能实例化.
 	  
+	9. 多态 依靠继承的功能和动态的引用实现
+	  静态的定义
+	  DATA: supr_obj type ref to super_class,
+	    sub1_obj type ref to sub_class_one,
+	    sub2_obj type ref to sub_class_two.
+	  START-OF-SELECTION.
+	    CREATE OBJECT sub1_obj.
+	    CREATE OBJECT sub2_obj.
+
+	  动态的引用方式
+	  supr_obj = sub1_obj.
+	  CALL METHOD supr_obj->test_method.
+	  supr_obj = sub2_obj.
+	  CALL METHOD supr_obj->test_method.
+	10. 接口
+	  INTERFACE intr1.
+	    METHODS m1.
+	  ENDINTERFACE.
+	  INTERFACE intr2.
+	    METHODS m2.
+	    ALIASES meth1 FOR I1~m1.
+	  ENDINTERFACE.
+	  
+	  CLASS c1 DEFINITION.
+	    PUBLIC SECTION.
+		  INTERFACES intr2.
+		  ALIASES meth2 FOR intr2~m2.
+	  ENDCLASS.
+	  
+	  CLASS c1 IMPLEMENTATION.
+	  	METHOD I1~m1.(INTERFACE ~ METHOD:接口方法在类中的实现)
+		  DATA:num TYPE I VALUE 10.
+		  WRITE:/ num.
+		ENDMETHOD.
+		METHOD I2~m2.
+		  ...
+		ENDMETHOD.
+	  ENDCLASS.
+	  
+	  START-OF-SELECTION.
+	    DATA: oref TYPE REF TO c1.
+		CREATE OBJECT oref.
+		CALL METHOD: oref->I2~meth1.
+		CALL METHOD: oref->meth2
+	  a.接口的组件全名称能够使用intf~comp语句被添加到其它接口或类中.
+	  b.别名是用来代替接口中组件名称,在类的实现部分,通过别名来代替组件名称.
+	  c.在类或类的对象调用的时候,必须使用接口的组件全名称.
+	11.Event
+	  事件的工作机制:在ABAP中，我们使用发布和预定的机制(publish and subscribe).类声明一个事件,通过实现一个方法来发布这个事件
+	  (事件挂在一个方法上,事件一触发就会调用这个方法)一个类可以实现一个方法来预定这个事件.
+	  步骤:
+	  	<1> 在类中定义事件
+		<2> 实现句柄方法，把事件与要触发这个事件的类关联起来
+		<3> 注册事件方法	
