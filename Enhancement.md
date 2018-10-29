@@ -31,14 +31,14 @@
     it will list all the places as in SAP if any user exit is used, a comment is been written above the user exit.
 
     2. How to find customer exits?
-    <1> 通过一些专门的程序，如:[利用t-code查找增强出口的程序工具](https://www.591sap.com/thread-86-1-1.html)
+    <1> 通过一些专门的程序，如:[利用t-code查找增强出口的程序工具](https://www.591sap.com/thread-87-1-1.html)
     <2> Search string “call customer” in the main program source code;
     <3> SE80 -> Repository Infomation System -> Enhancements -> Customer Exits -> Input search condition -> Execute
     <4> SE11 -> Database table: MODSAPVIEW -> Display Contents -> Input "*program name*" into Enhancement field ->
         Execute -> 得到的SAP extension name 即为 Customer Exits Enhancement Name.
 
     3. How to find BADIs?
-     <1> 通过一些专门的程序，如:[一个功能非常全面的增强出口查找工具](https://www.591sap.com/thread-87-1-1.html)
+     <1> 通过一些专门的程序，如:[一个功能非常全面的增强出口查找工具](https://www.591sap.com/thread-86-1-1.html)
      <2> Search string “type ref to” in the main program source code, then check if there is BAdi used in the program;
      <3> Set break-point in the method CL_EXITHANDLER=>GET_INSTANCE.
      <4> SE80 -> Repository Infomation System -> Enhancements -> Business Add-ins
