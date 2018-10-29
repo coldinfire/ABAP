@@ -17,15 +17,20 @@
 	  你可以通过内部的form和外部的function module来实现程序的模块化。
 	  这些过程除了可以操作全局变量外还可以具备内部的本地变量来协助实现内部的一些特定功能。
 
-	对于OO编程，唯一的结构单位就是类，这里类的实例对象取代了全局变量。这些对象封装了应用的状态和行为。应用的状态是用属性来代表的它取代了面向过程中的全局变量。
+	对于OO编程，唯一的结构单位就是类，这里类的实例对象取代了全局变量。这些对象封装了应用的状态和行为。
+	应用的状态是用属性来代表的它取代了面向过程中的全局变量。
 	应用的行为是通过方法来实现的，他们用来改变应用的属性或者调用其它对象的方法。
 	ABAP OO支持OO和面向过程的两种模式，这样在传统的ABAP程序（比如报表，模块池，功能池等）中你也可以使用ABAP对象类。
 	在这些程序里你也就可以使用基于面向对象的新技术了，比如一些用户界面，避免了要想使用这些新技术必须重新编写程序。
 
-	纯粹的ABAP OO模式，所有的代码都封装在类中。你的应用中并不直接触presentation layer(SAP Gui , Business Server Pages etc.),persistent data(database table,system file)。他们是通过类库中的相应服务类来提供的。比如SAP Control Framework ,Desktop Office Integration, and Business Pages提供了与表现层的接口。对于SAP Web Application 6.10以上提供了与数据库层接口的服务对象。
-	虽然纯粹的OO模式技术上是可行的，但是现实中还存在着大量的两种模式的混合体。ABAP 对象和面向过程的技术同时应用，调用常用的功能模块，调用屏幕或者直接访问数据库等在对象中都存在。混合的模式及利用了新技术又保护了已投入的成本。
-	两种模式的选择
-
+	纯粹的ABAP OO模式，所有的代码都封装在类中。你的应用中并不直接触presentation layer(SAP Gui , Business Server Pages etc.),
+	persistent data(database table,system file)。他们是通过类库中的相应服务类来提供的。
+	比如SAP Control Framework ,Desktop Office Integration, and Business Pages提供了与表现层的接口。
+	对于SAP Web Application 6.10以上提供了与数据库层接口的服务对象。
+	虽然纯粹的OO模式技术上是可行的，但是现实中还存在着大量的两种模式的混合体。
+	ABAP 对象和面向过程的技术同时应用，调用常用的功能模块，调用屏幕或者直接访问数据库等在对象中都存在。
+	混合的模式及利用了新技术又保护了已投入的成本。
+	
 ## OO的基本使用
 	1. 定义
 	  CLASS C1 DEFINITION.
@@ -63,3 +68,37 @@
 	  <1> 每个类只有一个构造器
 	  <2> 运行时在Create object 语句中自动调用构造器
 	  <3> 必须在public section 中定义和应用构造器
+	4. 对象及其引用
+	  DATA: ov1 TYPE REF TO class_name.
+	  CREATE OBJECT ov1.
+	  WRITE:/ ov1->method().
+	  CALL METHOD ov1->method().
+	  自我引用:ME,包含当前对象的地址的引用
+	  父类引用:super
+	  指针内表:oref_tab TYPE TABLE OF REF TO class_name.(内表)
+	  	  oref TYPE REF TO class_name.(结构)
+	5. 方法的使用
+	  参数接口:METHODS meth1
+		IMPORTING VALUE(i1) / i1 TYPE type / LIKE dobj DEFAULT def1
+		EXPORTING VALUE(e1) / e1 TYPE type / LIKE dobj
+		CHANGING VALUE(c1)/ c1 TYPE type /LIKE dobj DEFAULT def2
+		EXCEPTIONS x1
+	  方法调用:CALL METHODS oref1 ->meth1
+		[ EXPOTING i1 = a1…….in = an ]
+		[ IMPOTING e1 = a1…….en = an ]
+		[ CHANGING c1 = a1…….cn = an ]
+		[ EXCEPTION x1 = r1 …. Other = rn] (a1-an为实际参数)
+	6. 继承(单继承,不支持方法重载)
+	  CLASS subclass DEFINITION INHERITING FROM superclass.(继承除private外的组件)
+	    method(方法重写,功能扩展)
+	  ENDCLASS.
+	7. 抽象类
+	  CLASS cl_supper DEFINITION.
+	    PUBLIC SECTION.
+	      METHODS:demo1 ABSTRACT,demo2.
+	  ENDCLASS.
+	  CLASS cl_sub DEFINITION INHERITING FROM cl_super.
+	    PUBLIC SECTION.
+	      METHODS demo1 REDEFINITION.
+	  ENDCLASS.
+	  
