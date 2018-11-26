@@ -24,6 +24,8 @@
         Customer exits的调用方式为：
         FM Exits: CALL CUSTOMER-FUNCTION 'xxx' EXPORTING ... IMPORTING ...
         Subscreen: Call CUSTOMER-SUBSCREEN INCLUDING
+    6. VOFM 
+        Display:Requirements & Formulas => Formulas => Condition value 可定义增强公式
 
 ## How to find user exits?
     1. Using t-code: SE93 and specify the transaction code. from here goto the main program and click on the FIND button.
