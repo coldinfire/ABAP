@@ -73,6 +73,11 @@
 		DATA txt(8) TYPE c VALUE '19980606'.
 		FIELD-SYMBOLS <fs>.
 		ASSIGN txt TO <fs> CASTING TYPE d."由于定义时未指定具体的类型，所以这里需要显示强转
+	4.6 动态引用，通过循环赋值给定义的字段符号，对其进行修改，等于直接修改原内表。
+		field-symbols:<l_shortageqty> type mng01.
+		loop at <dyn_table> assigning <dyn_wa>.
+			assign component 'SHORTAGEQTY' of structure <dyn_wa> to <l_shortageqty>.
+			 <l_shortageqty> = <l_shortageqty> - <l_fvalue>.
 ## 5.others 
 	1. 标记字段的使用有时可以使程序的逻辑更加清晰
 	2. 字符串连接：&& 替代 CONCATENATE
