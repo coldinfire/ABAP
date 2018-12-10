@@ -68,8 +68,16 @@
 	ST22 : 查看日志信息
 	SE91 : 消息管理
 	SM12 : 编辑锁定解除
-
-## 5.Enhancement
+## 5.Commit && Rollback
+	CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
+		EXPORTING
+			wait = 'X'.
+		IMPORTING
+			return = commback.
+	CALL FUNCTION 'BAPI_TRANSACTION_ROLLBACK'
+		IMPORTING
+			return = commback.
+## 6.Enhancement
 	1. 利用t-code查找增强出口的程序工具
 		REPORT  zdamon_005 NO STANDARD PAGE HEADING.
 		TABLES : tstc, tadir, modsapt, modact, trdir, tfdir, enlfdir.
