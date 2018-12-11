@@ -67,6 +67,7 @@
 	SE19 : BADI修改和创建
 	ST22 : 查看日志信息
 	SE91 : 消息管理
+	SE93 : TCode管理
 	SM12 : 编辑锁定解除
 ## 5.Commit && Rollback
 	CALL FUNCTION 'BAPI_TRANSACTION_COMMIT'
